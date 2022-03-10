@@ -96,7 +96,6 @@ button.incorrect {
   width: 78px;
   margin: 144px 0 0 144px;
   position: absolute;
-  visibility: hidden;
   animation: wiggle 1.35s infinite;
 }
 
@@ -104,13 +103,21 @@ button.incorrect {
   margin: 135px 0 0 140px;
   transform: scale(3);
   filter: brightness(0);
-  transition: filter .5s ease-out;
   position: absolute;
   left: 0;
 }
 
+main.reset #pokemon-image {
+  visibility: hidden;
+  
+}
+
+main.reset #pokeball {
+  visibility: visible; 
+}
+
 main.fetching #pokeball {
-  visibility: visible;
+  visibility: hidden;
 }
 
 main.fetching #pokemon-image {
@@ -126,6 +133,8 @@ main.fetching #choices {
 
 main.revealed #pokemon-image {
   filter: none;
+  visibility:visible; 
+  transition: filter .5s ease-in;
 }
 
 main.revealed #answer {
