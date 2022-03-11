@@ -5,7 +5,7 @@ class SnowFlake {
         this.x = Math.random() * w 
         this.y = Math.random()
         // flake dimensions 
-        this.size = Math.random() * 3.5
+        this.size = Math.random() * 7
         this.velocity = (Math.random() - .3)
     }
 
@@ -15,11 +15,13 @@ class SnowFlake {
         this.y += this.velocity + (Math.random() - .1)
         this.x += (Math.random() - .5)
         
+
         // flake illustration 
         style.beginPath()
         style.arc(this.x, this.y, this.size, 0, 360)
         style.fill()
         style.closePath() 
+
     }  
 };
  
