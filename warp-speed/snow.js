@@ -2,8 +2,8 @@
 class SnowFlake {
     constructor() {
         // flake coordinates
-        this.x = Math.random() * w 
-        this.y = Math.random()
+        this.x = Math.random() * w
+        this.y = Math.random() * w
         // flake dimensions 
         this.size = Math.random() * 7
         this.velocity = (Math.random() - .3)
@@ -11,11 +11,13 @@ class SnowFlake {
 
     createSnow(){
         // flake attributes 
-        let rgn = Math.floor(Math.random() * 500) 
+        let rgn = Math.floor(Math.random() * 100) 
         if (rgn !== 1) style.fillStyle = '#fff' 
         if (rgn === 1) style.fillStyle = '#000'
-        this.y += this.velocity + (Math.random() - .1)
-        this.x += (Math.random() - .5)
+        
+        
+        this.x += this.velocity + (Math.random() - .1)
+        this.y += (Math.random() - .5)
         
 
         // flake illustration 
@@ -24,13 +26,15 @@ class SnowFlake {
         style.fill()
         style.closePath() 
 
+        console.log(style)
+
     }  
 };
  
 // flake animation 
 function fall() { 
     style.clearRect(0, 0, w, h)
-    for (let i = 0; i < Math.floor(Math.random() * 2); i++) snowFlakes.push(new SnowFlake())
+    for (let i = 0; i <  1; i++) snowFlakes.push(new SnowFlake())
     snowFlakes.forEach(flake => flake.createSnow()) 
     requestAnimationFrame(fall)
 };
