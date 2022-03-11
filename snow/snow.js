@@ -12,7 +12,7 @@ class SnowFlake {
     createSnow(){
         // flake attributes 
         style.fillStyle = '#fff' 
-        this.y += this.velocity + (Math.random() - .3)
+        this.y += this.velocity + (Math.random() - .1)
         this.x += (Math.random() - .5)
         
         // flake illustration 
