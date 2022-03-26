@@ -1,27 +1,46 @@
-console.log("loading map...")
+// *** map *** //
 let currentMap = new Map('background','./maps/firstTown.png',-735,-650)
+let currentStage = new Canvas('canvas','2d',window.innerWidth, window.innerHeight)
+
+const generateCollisionMap =  []
+const boundaries = []
+testBoundary = new Boundary()
+testBoundary.positionY = 500 
+testBoundary.positionX = 400 
+const moveables = [testBoundary, currentMap, boundaries]
+for (let i = 0; i < firstTownCollisions.length; i += 70) { 
+    // 70 is the number of tiles wide in one row of the map
+    generateCollisionMap.push(firstTownCollisions.slice(i, 70 + i ))
+    // slicing by chunks of 70 = the number of tiles for map height
+}
+generateCollisionMap.forEach((row, i) => { 
+    row.forEach((fence, j) => {
+        if (fence === 1025)
+            boundaries.push(new Boundary(j, i))
+    })
+})
+
+// *** player *** //
 const playerOne = new Player('./sprites/playerUp.png', './sprites/playerDown.png', './sprites/playerLeft.png', './sprites/playerRight.png')
+
+//  *** controller ** //
 const controller = new Controller
+controller.gameControls()
+let lastKey2 = ''
 
-window.onload = () => {
-
-    console.log("creating stage...")
-    var stage = new Canvas('canvas','2d',window.innerWidth, window.innerHeight)
-
-    console.log("drawing stage..")
-    stage.context.drawImage(currentMap.image, currentMap.xOffSet, currentMap.yOffSet)
-    stage.context.drawImage(playerOne.downImage, // works best with 4-framed sprite
-        0, // start x crop position
-        0, // start y crop position 
-        playerOne.downImage.width / 4, // end x crop position 
-        playerOne.downImage.height, // end y crop position 
-        stage.selector.width / 2 - playerOne.downImage.width / 4 / 2, // x placement coordinates
-        stage.selector.height / 2 - playerOne.downImage.height / 2, // y placement coordinates
-        playerOne.downImage.width / 4, // rendered sprite width
-        playerOne.downImage.height)   // rendered sprite height 
-    
-    console.log("activating controller...")
-    controller.gameControls()
+// *** animation *** //
+window.onload = function() {
+    window.requestAnimationFrame(window.onload) // game.animate loops the animation
+    // console.log("creating landscape...")
+    currentMap.draw()
+    boundaries.forEach(boundary => boundary.fence())
+    // console.log(testBoundary)
+    testBoundary.fence()
+    // console.log("summoning player...")
+    playerOne.summon()   
+    // console.log("activating controller...")
+    controller.active()
 }
 
- 
+
+console.log(moveables)

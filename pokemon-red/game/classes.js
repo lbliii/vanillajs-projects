@@ -1,8 +1,15 @@
+// classes: Boundary, Canvas, Controller, Map, Player, Sprite 
 class Boundary {
-    constructor(tile, position){
-        this.width = tile  // tiles should be square
-        this.height = tile 
-        this.position = position
+    constructor(xPos, yPos){
+        this.width = 48 // tiles should be square
+        this.height = 48
+        this.positionX = xPos * this.width + currentMap.xOffSet  // aligns with map
+        this.positionY = yPos * this.height + currentMap.yOffSet  
+    }
+
+    fence(){
+        currentStage.context.fillStyle = 'red'
+        currentStage.context.fillRect(this.positionX, this.positionY, this.width, this.height)
     }
 }
 
@@ -23,8 +30,7 @@ class Controller {
         this.left = false 
         this.up = false 
         this.down = false 
-        this.lastKey = '' // stores the last keydown input 
-        
+        this.lastKey = '' // allows direction change when 2 buttons pressed
         this.gameControls = function (){
             window.addEventListener('keyup', function(event){
                 var keyName = event.key;
@@ -47,33 +53,31 @@ class Controller {
                       break
                   default:
                       break
-                
                 }
               })
         
               window.addEventListener('keydown', function(event){
                 var keyName = event.key
-        
                 switch(keyName) {
                   case 'd': 
                   case 'ArrowRight':
                       controller.right = true
-                      this.lastKey = 'ArrowRight' // helps with changing direction when 2 buttons are pressed
+                      controller.lastKey = 'right' // helps with changing direction when 2 buttons are pressed
                       break
                   case 'a':
                   case 'ArrowLeft':
                       controller.left = true
-                      this.lastKey = 'ArrowLeft'
+                      controller.lastKey = 'left'
                       break
                   case 'w': 
                   case 'ArrowUp':
                       controller.up = true
-                      this.lastKey = 'ArrowUp'
+                      controller.lastKey = 'up'
                       break
                   case 's': 
                   case 'ArrowDown':
                       controller.down = true
-                      this.lastKey = 'ArrowDown'
+                      controller.lastKey = 'down'
                       break
                   default:
                       break
@@ -81,8 +85,32 @@ class Controller {
               })
         }
     }
-}
+    active() { // use just if statements if you want to strafe but you'll need more sprites.
+        if (controller.right === true && controller.lastKey == 'right'){  
+            currentMap.xOffSet = currentMap.xOffSet - 3
+            moveables.forEach((moveable) => {  // moves movables (e.g., boundaries) to keep them in
+                moveable.positionX -= 3
+            })
+        } else if (controller.left === true){
+            currentMap.xOffSet = currentMap.xOffSet + 3
+            moveables.forEach((moveable) => {
+                moveable.positionX += 3
+            })
+        } else if (controller.up === true){
+            currentMap.yOffSet = currentMap.yOffSet + 3
+            moveables.forEach((moveable) => {
+                moveable.positionY += 3
+            })
 
+            // console.log(currentMap.xOffSet) 
+        } else if (controller.down === true){
+            currentMap.yOffSet = currentMap.yOffSet - 3
+            moveables.forEach((moveable) => {
+                moveable.positionY -= 3
+            })
+        }
+    }
+}
 class Sprite {
     constructor(name, location, velocity, frames, animate = false){
         this.name = name
@@ -92,9 +120,8 @@ class Sprite {
         this.animate = animate
     }
 }
-
 class Player extends Sprite {
-    constructor(src1, src2, src3, src4){
+    constructor(src1, src2, src3, src4) {
         super()
         this.upImage = new Image()
         this.upImage.src =`${src1}`
@@ -104,6 +131,18 @@ class Player extends Sprite {
         this.leftImage.src =`${src3}`
         this.rightImage = new Image()
         this.rightImage.src =`${src4}`
+    }
+
+    summon() {
+        currentStage.context.drawImage(playerOne.downImage, // works best with 4-framed sprite
+            0, // start x crop position
+            0, // start y crop position 
+            playerOne.downImage.width / 4, // end x crop position 
+            playerOne.downImage.height, // end y crop position 
+            currentStage.selector.width / 2 - playerOne.downImage.width / 4 / 2, // x placement coordinates
+            currentStage.selector.height / 2 - playerOne.downImage.height / 2, // y placement coordinates
+            playerOne.downImage.width / 4, // rendered sprite width
+            playerOne.downImage.height)   // rendered sprite height 
     }
 
 }
@@ -123,6 +162,11 @@ class Map {
         this.xOffSet = xOffSet 
         this.yOffSet = yOffSet 
     }
+    draw(){
+        var stage = currentStage 
+        stage.context.drawImage(currentMap.image, currentMap.xOffSet, currentMap.yOffSet)
+    }
 
 }
+
 
