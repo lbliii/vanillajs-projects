@@ -88,25 +88,25 @@ class Controller {
     active() { // use just if statements if you want to strafe but you'll need more sprites.
         if (controller.right === true && controller.lastKey == 'right'){  
             currentMap.xOffSet = currentMap.xOffSet - 3
-            moveables.forEach((moveable) => {  // moves movables (e.g., boundaries) to keep them in
-                moveable.positionX -= 3
+            boundaries.forEach((boundary) => {  // moves boundaries to keep them in place; may need to do this to other objs as well
+                boundary.positionX -= 3
             })
         } else if (controller.left === true){
             currentMap.xOffSet = currentMap.xOffSet + 3
-            moveables.forEach((moveable) => {
-                moveable.positionX += 3
+            boundaries.forEach((boundary) => {
+                boundary.positionX += 3
             })
         } else if (controller.up === true){
             currentMap.yOffSet = currentMap.yOffSet + 3
-            moveables.forEach((moveable) => {
-                moveable.positionY += 3
+            boundaries.forEach((boundary) => {
+                boundary.positionY += 3
             })
 
             // console.log(currentMap.xOffSet) 
         } else if (controller.down === true){
             currentMap.yOffSet = currentMap.yOffSet - 3
-            moveables.forEach((moveable) => {
-                moveable.positionY -= 3
+            boundaries.forEach((boundary) => {
+                boundary.positionY -= 3
             })
         }
     }
@@ -160,7 +160,8 @@ class Map {
         this.image = new Image()
         this.image.src = imageUrl
         this.xOffSet = xOffSet 
-        this.yOffSet = yOffSet 
+        this.yOffSet = yOffSet
+        
     }
     draw(){
         var stage = currentStage 

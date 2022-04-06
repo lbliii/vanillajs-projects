@@ -3,11 +3,13 @@ let currentMap = new Map('background','./maps/firstTown.png',-735,-650)
 let currentStage = new Canvas('canvas','2d',window.innerWidth, window.innerHeight)
 
 const generateCollisionMap =  []
-const boundaries = []
+
 testBoundary = new Boundary()
 testBoundary.positionY = 500 
 testBoundary.positionX = 400 
-const moveables = [testBoundary, currentMap, boundaries]
+const boundaries = [testBoundary]
+
+
 for (let i = 0; i < firstTownCollisions.length; i += 70) { 
     // 70 is the number of tiles wide in one row of the map
     generateCollisionMap.push(firstTownCollisions.slice(i, 70 + i ))
@@ -26,7 +28,7 @@ const playerOne = new Player('./sprites/playerUp.png', './sprites/playerDown.png
 //  *** controller ** //
 const controller = new Controller
 controller.gameControls()
-let lastKey2 = ''
+
 
 // *** animation *** //
 window.onload = function() {
@@ -43,4 +45,3 @@ window.onload = function() {
 }
 
 
-console.log(moveables)
