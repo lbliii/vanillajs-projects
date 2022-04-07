@@ -30,12 +30,17 @@ const controller = new Controller
 controller.gameControls()
 
 
+
+
 // *** animation *** //
 window.onload = function() {
     window.requestAnimationFrame(window.onload) // game.animate loops the animation
     // console.log("creating landscape...")
     currentMap.draw()
-    boundaries.forEach(boundary => boundary.fence())
+    boundaries.forEach(boundary => {
+        boundary.fence()
+        controller.enforceBoundaries(playerOne, testBoundary)
+    })
     // console.log(testBoundary)
     testBoundary.fence()
     // console.log("summoning player...")
@@ -44,4 +49,7 @@ window.onload = function() {
     controller.active()
 }
 
+console.log(playerOne)
+console.log(playerOne.frames)
+console.log(playerOne.frames++)
 

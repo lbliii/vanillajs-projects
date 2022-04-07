@@ -86,17 +86,23 @@ class Controller {
         }
     }
     active() { // use just if statements if you want to strafe but you'll need more sprites.
-        if (controller.right === true && controller.lastKey == 'right'){  
+        if (controller.right === true && controller.lastKey == 'right'){
+            playerOne.currentSprite = playerOne.rightImage
+            playerOne.frames += 1
             currentMap.xOffSet = currentMap.xOffSet - 3
             boundaries.forEach((boundary) => {  // moves boundaries to keep them in place; may need to do this to other objs as well
                 boundary.positionX -= 3
             })
         } else if (controller.left === true){
+            playerOne.currentSprite = playerOne.leftImage 
+            playerOne.frames += 1 
             currentMap.xOffSet = currentMap.xOffSet + 3
             boundaries.forEach((boundary) => {
                 boundary.positionX += 3
             })
         } else if (controller.up === true){
+            playerOne.currentSprite = playerOne.upImage 
+            playerOne.frames += 1
             currentMap.yOffSet = currentMap.yOffSet + 3
             boundaries.forEach((boundary) => {
                 boundary.positionY += 3
@@ -104,19 +110,28 @@ class Controller {
 
             // console.log(currentMap.xOffSet) 
         } else if (controller.down === true){
+            playerOne.currentSprite = playerOne.downImage
+            playerOne.frames += 1 
             currentMap.yOffSet = currentMap.yOffSet - 3
             boundaries.forEach((boundary) => {
                 boundary.positionY -= 3
             })
         }
     }
+    enforceBoundaries(obj1, obj2) {
+        if (obj1.location.x + obj1.width >= obj2.positionX && // x location + width = right collision
+        obj1.location.x <= obj2.positionX + obj2.width && // x location = left collision
+        obj1.location.y + obj1.height >= obj2.positionY &&  // y location + height = top collision
+        obj1.location.y  <= obj2.positionY + obj2.width) // y location  = bottom collision
+        console.log("Colliding!!")
+    }
 }
 class Sprite {
-    constructor(name, location, velocity, frames, animate = false){
+    constructor(name, location = {x:0, y:0}, velocity, frames, animate = false){
         this.name = name
         this.location = location 
         this.velocity = velocity
-        this.frames = frames
+        this.frames = 0
         this.animate = animate
     }
 }
@@ -131,18 +146,25 @@ class Player extends Sprite {
         this.leftImage.src =`${src3}`
         this.rightImage = new Image()
         this.rightImage.src =`${src4}`
+        this.currentSprite = this.downImage
+        this.width = this.downImage.width / 4 
+        this.height = this.downImage.height 
+        this.location.x = currentStage.selector.width / 2 - this.width
+        this.location.y = currentStage.selector.height / 2 - this.height 
+        
     }
 
     summon() {
-        currentStage.context.drawImage(playerOne.downImage, // works best with 4-framed sprite
+        currentStage.context.drawImage(this.currentSprite, // works best with 4-framed sprite
             0, // start x crop position
             0, // start y crop position 
-            playerOne.downImage.width / 4, // end x crop position 
-            playerOne.downImage.height, // end y crop position 
-            currentStage.selector.width / 2 - playerOne.downImage.width / 4 / 2, // x placement coordinates
-            currentStage.selector.height / 2 - playerOne.downImage.height / 2, // y placement coordinates
-            playerOne.downImage.width / 4, // rendered sprite width
-            playerOne.downImage.height)   // rendered sprite height 
+            this.width, // end x crop position 
+            this.height, // end y crop position 
+            this.location.x, // x placement coordinates
+            this.location.y, // y placement coordinates
+            this.width, // rendered sprite width
+            this.height)   // rendered sprite height 
+            
     }
 
 }
