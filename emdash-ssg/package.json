@@ -1,0 +1,19 @@
+{
+  "name": "emdash-ssg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "ssg"
+  ],
+  "author": "lawrence lane",
+  "license": "ISC",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "nodemon": "^2.0.16",
+    "showdown": "^2.1.0"
+  }
+}
